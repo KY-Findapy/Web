@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Instagram Grid Preview</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* Page reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #ffffff;
+      color: #111;
+    }
+
+    .wrapper {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 8px;
+    }
+
+    /* Grid container: 3 columns, no gaps (like Instagram) */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background-color: #fff;
+    }
+
+    .grid-item {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1; /* square cells */
+      overflow: hidden;
+      background: #eee;
+    }
+
+    .grid-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Instagram-style cropping */
+      display: block;
+    }
+
+    /* Optional: show planned index number on top-left */
+    .order-badge {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      padding: 2px 4px;
+      font-size: 10px;
+      background: rgba(0, 0, 0, 0.4);
+      color: #fff;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div id="grid" class="grid"></div>
+  </div>
+
+  <script>
+    // 1. Define your planned posts here
+    // position = posting order; lower = earlier
+    const plannedPosts = [
+      {
+        id: 1,
+        imageUrl: "https://picsum.photos/id/1015/800/800",
+        position: 3
+      },
+      {
+        id: 2,
+        imageUrl: "https://picsum.photos/id/1025/800/800",
+        position: 1
+      },
+      {
+        id: 3,
+        imageUrl: "https://picsum.photos/id/1035/800/800",
+        position: 2
+      },
+      {
+        id: 4,
+        imageUrl: "https://picsum.photos/id/1045/800/800",
+        position: 4
+      },
+      {
+        id: 5,
+        imageUrl: "https://picsum.photos/id/1055/800/800",
+        position: 5
+      },
+      {
+        id: 6,
+        imageUrl: "https://picsum.photos/id/1065/800/800",
+        position: 6
+      }
+    ];
+
+    // 2. Sort posts by position (this controls grid order)
+    const sortedPosts = plannedPosts
+      .slice()
+      .sort((a, b) => a.position - b.position);
+
+    // 3. Render grid
+    const gridEl = document.getElementById("grid");
+
+    sortedPosts.forEach((post, index) => {
+      const item = document.createElement("div");
+      item.className = "grid-item";
+
+      const img = document.createElement("img");
+      img.src = post.imageUrl;
+      img.alt = `Planned post ${post.position}`;
+
+      const badge = document.createElement("div");
+      badge.className = "order-badge";
+      badge.textContent = post.position; // or index + 1
+
+      item.appendChild(img);
+      item.appendChild(badge);
+      gridEl.appendChild(item);
+    });
+  </script>
+</body>
+</html>
